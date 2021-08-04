@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 function StateHook () {
   const [count, setCount] = useState(0)
@@ -57,4 +57,23 @@ function EffectHook () {
   );
 }
 
-export { StateHook, EffectHook };
+// useRef 副作用
+function RefHook() {
+  // 构建 ref 容器
+  const myRef = useRef();
+  // 弹窗提示输入的值
+  function showValue() {
+    alert(myRef.current.value);
+  }
+  return (
+    <div>
+      <div>
+        <h2>useRef</h2>
+        <input type="text" ref={myRef} />
+      </div>
+      <button onClick={showValue}>点我提示输入内容</button>
+    </div>
+  );
+}
+
+export { StateHook, EffectHook, RefHook };
