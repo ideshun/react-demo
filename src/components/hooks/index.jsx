@@ -57,7 +57,7 @@ function EffectHook () {
   );
 }
 
-// useRef 副作用
+// useRef 保存标签对象，和 React.createRef() 一样
 function RefHook() {
   // 构建 ref 容器
   const myRef = useRef();
