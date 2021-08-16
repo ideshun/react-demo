@@ -2,7 +2,7 @@
  * @Author: Deshun
  * @Date: 2021-08-02 08:55:37
  * @LastEditors: Deshun
- * @LastEditTime: 2021-08-16 23:13:09
+ * @LastEditTime: 2021-08-16 23:23:55
  * @FilePath: \PanSoft\React\react-demo\src\App.js
  * @Description: App "外壳"组件
  */
@@ -54,6 +54,7 @@ export default function App() {
   );
   return (
     <Router>
+      {/* Link 必须在 Router 标签内 */}
       <Link to="/">Home</Link>
       <Route path="/" exact component={Home} />
       <Route path="/hooksDemo" component={hooksDemo} />
