@@ -2,11 +2,10 @@
  * @Author: Deshun
  * @Date: 2021-08-17 14:08:49
  * @LastEditors: Deshun
- * @LastEditTime: 2021-08-17 18:28:19
- * @FilePath: \react-demo\src\pages\hooks\README.md
+ * @LastEditTime: 2021-08-17 20:54:54
+ * @FilePath: \PanSoft\react-demo\src\pages\hooks\README.md
  * @Description: React Hooks
 -->
-
 ## React Hooks
 
 + Hook 是 React 16.8 的新增特性，可以让你在函数组件中使用 state 以及其他的 React 特性。
@@ -18,20 +17,20 @@
 2. 不用再去考虑 this 的指向问题。在类式组件中，必须去理解 JavaScript 中 this 的工作方式。
 3. 更容易复用代码。
    + 每调用useHook一次都会生成一份独立的状态，这个没有什么黑魔法，函数每次调用都会开辟一份独立的内存空间。
-   + 虽然状态(from useState)和副作用(`useEffect`)的存在依赖于组件，但它们可以在组件外部进行定义。这点是`class component`做不到的，你无法在外部声明state和副作用（如`componentDidMount`）。
+   + 虽然状态（from useState）和副作用 `useEffect` 的存在依赖于组件，但它们可以在组件外部进行定义。这点是 `class component` 做不到的，你无法在外部声明state和副作用（如 `componentDidMount` ）。
 4. 代码量更少，不需要像 React.Component 那样写太多的模板代码。
 
 ### 缺点
 
-1. 响应式的useEffect
-2. hooks不擅长异步的代码（旧引用问题）
-3. custom hooks有时严重依赖参数的不可变性
+1. 响应式的 useEffect。
+2. hooks 不擅长异步的代码（旧引用问题）。
+3. custom hooks 有时严重依赖参数的不可变性。
 
 
 
 ## useState
 
-+ `useState` 让函数组件也可以有 `state` 状态，并进行状态数据的读写操作
+`useState` 让函数组件也可以有 `state` 状态，并进行状态数据的读写操作。
 
 ### 类式组件写法：
 
@@ -89,48 +88,52 @@ export default UseState;
 const [stateName, setStateName] = useState(initValue)
 ```
 
+示例：
+
+```
+const [fruit, setFruit] = useState('banana');
+```
+
 等号左边名字并不是 React API 的部分，你可以随意取名字。
 
-这种 JavaScript 语法叫[数组解构](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring)。它意味着我们同时创建了 `fruit` 和 `setFruit` 两个变量，`fruit` 的值为 `useState` 的第一个返回值，`setFruit` 是返回的第二个值。
-
-它等价于下面的代码：
+这种 JavaScript 语法叫[数组解构](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring)。意味着同时创建了 `fruit` 和 `setFruit` 两个变量，`fruit` 的值为 `useState` 的第一个返回值，`setFruit` 是返回的第二个值。等价于下面的代码：
 
 ```
-  var fruitStateVariable = useState('banana'); // 返回一个有两个元素的数组
-  var fruit = fruitStateVariable[0]; // 数组里的第一个值
-  var setFruit = fruitStateVariable[1]; // 数组里的第二个值
+var fruitStateVariable = useState('banana'); // 返回一个有两个元素的数组
+var fruit = fruitStateVariable[0]; // 数组里的第一个值
+var setFruit = fruitStateVariable[1]; // 数组里的第二个值
 ```
 
-### useState 接受一个参数，状态的初始值。
+### useState 接受一个参数（状态的初始值）
 
 当我们使用 `useState` 定义 state 变量时候，它返回一个有两个值的数组。使用 `[0]` 和 `[1]` 来访问有点令人困惑，因为它们有特定的含义。这就是我们使用数组解构的原因。
 
-### useState 返回一个数组，数组包含两个元素
+### useState 返回一个数组，数组包含两个值
 
 1. 第一个值是当前的 state
 2. 第二个值是更新 state 的函数
 
 ### 更新状态的函数有两种写法：
 
-1. 参数为非函数值，直接指定新的状态值，内部用其覆盖原来的状态值
+1. **参数为非函数值**：直接指定新的状态值，内部用其覆盖原来的状态值
 
 ```
 setStateName(newValue)
 ```
 
-2. 参数为函数，接收原本的状态值，返回新的状态值，内部用其覆盖原来的状态值
+2. **参数为函数**：接收原本的状态值，返回新的状态值，内部用其覆盖原来的状态值
 
 ```
 setStateName(value => newValue)
 
 setStateName((value) => {
-  value + 1
+  return value + 1
 })
 ```
 
 ### 使用多个 state 变量
 
-将 state 变量声明为一对 `[something, setSomething]` 也很方便，因为如果我们想使用多个 state 变量，它允许我们给不同的 state 变量取不同的名称：
+将 state 变量声明为一对 `[something, setSomething]` 也很方便，如果想使用多个 state 变量，就可以给不同的 state 变量取不同的名称：
 
 ```
 function ExampleWithManyStates() {
@@ -141,28 +144,28 @@ function ExampleWithManyStates() {
 }
 ```
 
-在以上组件中，我们有局部变量 `age`，`fruit` 和 `todos`，并且我们可以单独更新它们：
+在以上组件中有局部变量 `age`，`fruit` 和 `todos`，并且可以单独更新它们：
 
 ```
-  function handleOrangeClick() {
-    // 和 this.setState({ fruit: 'orange' }) 类似
-    setFruit('orange');
-  }
+function handleOrangeClick() {
+  // 和 this.setState({ fruit: 'orange' }) 类似
+  setFruit('orange');
+}
 ```
 
-你**不必**使用多个 state 变量。State 变量可以很好地存储对象和数组，因此，你仍然可以将相关数据分为一组。然而，不像 class 中的 `this.setState`，更新 state 变量总是*替换*它而不是合并它。
+State 变量可以很好地存储对象和数组，因此，你仍然可以将相关数据分为一组。然而，不像 class 中的 `this.setState`，总是*替换*而不是合并的形式更新 state 变量，。
 
 
 
 ## useEffect
 
-+ Effect Hook 可以在函数组件中执行副作用操作(用于模拟类组件中的生命周期钩子)
-+ React 中的副作用操作:
-  + 发ajax请求数据获取
-  + 设置订阅 / 启动定时器
-  + 手动更改真实DOM
++ Effect Hook 可以在函数组件中执行副作用操作（用于模拟类组件中的生命周期钩子）
++ React 中常用的副作用操作:
+  1. ajax 请求数据获取
+  2. 设置订阅 / 启动定时器
+  3. 手动更改真实DOM
 
-### 类式组件
+### 类式组件写法
 
 ```
 import { Component } from "react";
@@ -193,7 +196,7 @@ class useEffectDemo extends Component {
 export default useEffectDemo;
 ```
 
-### 函数组件
+### 函数组件写法
 
 ```
 import { useEffect, useState } from "react";
@@ -248,10 +251,6 @@ componentWillUnmount()
 ### 组件卸载前调用
 
 ```
-function unMount() {
-  React.unmountComponentAtNode(document.getElementById("root"));
-}
-console.log("@");
 useEffect(() => {
   // 在此可以执行任何带副作用操作
   let timer = setInterval(() => {
@@ -259,7 +258,7 @@ useEffect(() => {
   }, 1000);
   return () => {
     // 组件卸载前调用，在此做一些收尾工作, 比如清除定时器/取消订阅等
-    console.log("##");
+    console.log("组件卸载了");
     clearInterval(timer);
   };
 }, []); // 不写 [] 全都监控，空数组 谁都不监控，[count] 监控 count 值。
@@ -267,7 +266,6 @@ useEffect(() => {
 return (
   <div>
     <h1>useEffect当前值为：{count}</h1>
-    <button onClick={unMount}>卸载组件</button>
   </div>
 );
 ```
@@ -278,11 +276,11 @@ return (
 
 其函数签名与 `useEffect` 相同，但它会在所有的 DOM 变更之后同步调用 effect。可以使用它来读取 DOM 布局并同步触发重渲染。在浏览器执行绘制之前，`useLayoutEffect` 内部的更新计划将被同步刷新。
 
-#### 对比
+#### useEffect和useLayoutEffect 的区别
 
 useEffect 在全部渲染完毕后才会执行
 
-useLayoutEffect 会在 浏览器 layout 之后，painting 之前执行
+useLayoutEffect 会在浏览器 layout 之后，painting 之前执行
 
 其函数签名与 useEffect 相同，但它会在所有的 DOM 变更之后**同步**调用 effect
 
@@ -292,4 +290,15 @@ useLayoutEffect 会在 浏览器 layout 之后，painting 之前执行
 
 **尽可能使用标准的 useEffect 以避免阻塞视图更新**
 
+
+
+参考文献：
+
+[React Hooks](https://reactjs.org/docs/hooks-intro.html)
+
+[解析 useEffect 和 useLayoutEffect](https://juejin.cn/post/6862624266723000328)
+
+[React Hooks 详解 + 项目实战](https://juejin.cn/post/6844903985338400782)
+
+[谈谈react hooks的优缺点](https://zhuanlan.zhihu.com/p/88593858)
 
